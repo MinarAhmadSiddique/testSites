@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Flight Tickets | Passage</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #1e40af;
+      color: white;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .ticket {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1.2rem 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .ticket p {
+      margin: 0.4rem 0;
+    }
+    button.cancel-btn {
+      background-color: #ef4444;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      margin-top: 0.8rem;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    button.cancel-btn:hover {
+      background-color: #b91c1c;
+    }
+    .no-reservations {
+      text-align: center;
+      font-size: 1.3rem;
+      margin-top: 3rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Flight Tickets</h1>
+  <div id="tickets-container"></div>
+
+  <script>
+    const ticketsContainer = document.getElementById('tickets-container');
+
+    function loadReservations() {
+      let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+
+      ticketsContainer.innerHTML = '';
+
+      if (reservations.length === 0) {
+        ticketsContainer.innerHTML = '<p class="no-reservations">No reservations found. Please make a reservation first.</p>';
+        return;
+      }
+
+      reservations.forEach(reservation => {
+        const dateObj = new Date(reservation.date);
+        const reservedAtObj = new Date(reservation.reservedAt);
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+        const ticketDiv = document.createElement('div');
+        ticketDiv.className = 'ticket';
+
+        ticketDiv.innerHTML = `
+          <p><strong>From:</strong> ${reservation.from}</p>
+          <p><strong>To:</strong> ${reservation.to}</p>
+          <p><strong>Departure Date:</strong> ${dateObj.toLocaleDateString(undefined, options)}</p>
+          <p><strong>Passengers:</strong> ${reservation.passengers}</p>
+          <p><strong>Class:</strong> ${reservation.travelClass}</p>
+          <p><strong>Reserved At:</strong> ${reservedAtObj.toLocaleString()}</p>
+          <button class="cancel-btn" data-id="${reservation.id}">Cancel Reservation</button>
+        `;
+
+        ticketsContainer.appendChild(ticketDiv);
+      });
+
+      // Add event listeners to cancel buttons
+      document.querySelectorAll('.cancel-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const id = Number(this.getAttribute('data-id'));
+          cancelReservation(id);
+        });
+      });
+    }
+
+    function cancelReservation(id) {
+      let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+      reservations = reservations.filter(r => r.id !== id);
+      localStorage.setItem('reservations', JSON.stringify(reservations));
+      loadReservations();
+    }
+
+    loadReservations();
+  </script>
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flight Status - Passage</title>
+  <style>
+    /* Background image setup */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #f0f0f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      box-sizing: border-box;
+    }
+
+    /* Overlay to darken the background for better readability */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: -1;
+    }
+
+    h1 {
+      margin-bottom: 25px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 1200px;
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.6);
+    }
+
+    th, td {
+      padding: 12px 18px;
+      border-right: 1px solid rgba(255, 255, 255, 0.15);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: rgba(30, 30, 30, 0.85);
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr td:last-child, tr th:last-child {
+      border-right: none;
+    }
+
+    /* Form styling */
+    form {
+      margin-top: 30px;
+      margin-bottom: 40px;
+      max-width: 400px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 15px;
+      align-self: center;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 8px 12px;
+      font-size: 15px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      box-shadow: 0 0 5px rgba(255,255,255,0.5);
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      transition: background-color 0.3s ease;
+    }
+
+    input[type="text"]::placeholder {
+      color: #ccc;
+    }
+
+    input[type="text"]:focus {
+      background-color: rgba(255, 255, 255, 0.25);
+    }
+
+    button {
+      padding: 8px 18px;
+      font-size: 15px;
+      background-color: #1e90ff;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 10px rgba(30,144,255,0.6);
+    }
+
+    button:hover {
+      background-color: #0066cc;
+      box-shadow: 0 6px 14px rgba(0, 102, 204, 0.8);
+    }
+
+    /* Info box */
+    #info {
+      max-width: 600px;
+      width: 100%;
+      background-color: rgba(0,0,0,0.75);
+      padding: 25px 30px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+      font-size: 15px;
+      line-height: 1.5;
+      color: #eee;
+      min-height: 120px;
+    }
+
+    #info h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(255,255,255,0.3);
+      padding-bottom: 8px;
+    }
+
+    #info p {
+      margin: 6px 0;
+    }
+
+    #info p strong {
+      color: #1e90ff;
+    }
+
+    #info button {
+      margin-top: 18px;
+      background-color: #28a745;
+      box-shadow: 0 4px 10px rgba(40,167,69,0.7);
+    }
+
+    #info button:hover {
+      background-color: #1e7e34;
+      box-shadow: 0 6px 14px rgba(30,126,52,0.9);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      th, td {
+        font-size: 12px;
+        padding: 10px 8px;
+      }
+
+      form {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+      }
+
+      label {
+        align-self: flex-start;
+      }
+
+      button, input[type="text"] {
+        width: 100%;
+      }
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <h1>Passage Flight Status</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Flight Number</th>
+        <th>Airline</th>
+        <th>Destination</th>
+        <th>Scheduled Departure</th>
+        <th>Estimated Departure</th>
+        <th>Status</th>
+        <th>Gate</th>
+        <th>Terminal</th>
+        <th>Plane Model</th>
+        <th>Remarks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>PA101</td>
+        <td>Passage</td>
+        <td>Los Angeles (LAX)</td>
+        <td>7:00 AM</td>
+        <td>7:00 AM</td>
+        <td>On Time</td>
+        <td>A5</td>
+        <td>1</td>
+        <td>Boeing 737 MAX</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>PA202</td>
+        <td>Passage</td>
+        <td>Chicago (ORD)</td>
+        <td>8:30 AM</td>
+        <td>8:45 AM</td>
+        <td>Delayed</td>
+        <td>B12</td>
+        <td>2</td>
+        <td>Airbus A320</td>
+        <td>Weather delay</td>
+      </tr>
+      <tr>
+        <td>PA303</td>
+        <td>Passage</td>
+        <td>Miami (MIA)</td>
+        <td>10:00 AM</td>
+        <td>10:00 AM</td>
+        <td>Boarding</td>
+        <td>C3</td>
+        <td>3</td>
+        <td>Boeing 757</td>
+        <td>Boarding now</td>
+      </tr>
+      <tr>
+        <td>PA404</td>
+        <td>Passage</td>
+        <td>Denver (DEN)</td>
+        <td>11:45 AM</td>
+        <td>12:00 PM</td>
+        <td>Delayed</td>
+        <td>D8</td>
+        <td>1</td>
+        <td>Embraer 175</td>
+        <td>Late arrival of plane</td>
+      </tr>
+      <tr>
+        <td>PA505</td>
+        <td>Passage</td>
+        <td>Seattle (SEA)</td>
+        <td>1:30 PM</td>
+        <td>1:30 PM</td>
+        <td>On Time</td>
+        <td>E1</td>
+        <td>2</td>
+        <td>Boeing 737 MAX</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>PA606</td>
+        <td>Passage</td>
+        <td>Atlanta (ATL)</td>
+        <td>3:00 PM</td>
+        <td>3:10 PM</td>
+        <td>Delayed</td>
+        <td>F4</td>
+        <td>3</td>
+        <td>Airbus A321</td>
+        <td>Runway congestion</td>
+      </tr>
+      <tr>
+        <td>PA707</td>
+        <td>Passage</td>
+        <td>Boston (BOS)</td>
+        <td>5:00 PM</td>
+        <td>5:00 PM</td>
+        <td>On Time</td>
+        <td>G7</td>
+        <td>1</td>
+        <td>Bombardier CRJ900</td>
+        <td>-</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <form onsubmit="return false;">
+    <label for="flightnumber">Pull Information By Flight Number:</label>
+    <input type="text" id="flightnumber" placeholder="e.g. PA101" />
+    <button type="button" onclick="pullinfo()">Pull</button>
+  </form>
+
+  <div id="info"></div>
+
+  <script>
+    const flights = {
+      "PA101": {
+        airline: "Passage",
+        route: "JFK (New York) → LAX (Los Angeles)",
+        scheduledDeparture: "7:00 AM (Local Time)",
+        estimatedDeparture: "7:00 AM (Local Time)",
+        flightStatus: "On Time",
+        gate: "A5",
+        terminal: "1",
+        planeModel: "Boeing 737 MAX",
+        duration: "6h 15m",
+        remarks: "-"
+      },
+      "PA202": {
+        airline: "Passage",
+        route: "JFK (New York) → ORD (Chicago O'Hare)",
+        scheduledDeparture: "8:30 AM (Local Time)",
+        estimatedDeparture: "8:45 AM (Local Time)",
+        flightStatus: "Delayed",
+        gate: "B12",
+        terminal: "2",
+        planeModel: "Airbus A320",
+        duration: "3h 30m",
+        remarks: "Weather delay"
+      },
+      "PA303": {
+        airline: "Passage",
+        route: "JFK (New York) → MIA (Miami)",
+        scheduledDeparture: "10:00 AM (Local Time)",
+        estimatedDeparture: "10:00 AM (Local Time)",
+        flightStatus: "Boarding",
+        gate: "C3",
+        terminal: "3",
+        planeModel: "Boeing 757",
+        duration: "3h 00m",
+        remarks: "Boarding now"
+      },
+      "PA404": {
+        airline: "Passage",
+        route: "JFK (New York) → DEN (Denver)",
+        scheduledDeparture: "11:45 AM (Local Time)",
+        estimatedDeparture: "12:00 PM (Local Time)",
+        flightStatus: "Delayed",
+        gate: "D8",
+        terminal: "1",
+        planeModel: "Embraer 175",
+        duration: "4h 30m",
+        remarks: "Late arrival of plane"
+      },
+      "PA505": {
+        airline: "Passage",
+        route: "JFK (New York) → SEA (Seattle)",
+        scheduledDeparture: "1:30 PM (Local Time)",
+        estimatedDeparture: "1:30 PM (Local Time)",
+        flightStatus: "On Time",
+        gate: "E1",
+        terminal: "2",
+        planeModel: "Boeing 737 MAX",
+        duration: "6h 00m",
+        remarks: "-"
+      },
+      "PA606": {
+        airline: "Passage",
+        route: "JFK (New York) → ATL (Atlanta)",
+        scheduledDeparture: "3:00 PM (Local Time)",
+        estimatedDeparture: "3:10 PM (Local Time)",
+        flightStatus: "Delayed",
+        gate: "F4",
+        terminal: "3",
+        planeModel: "Airbus A321",
+        duration: "2h 15m",
+        remarks: "Runway congestion"
+      },
+      "PA707": {
+        airline: "Passage",
+        route: "JFK (New York) → BOS (Boston)",
+        scheduledDeparture: "5:00 PM (Local Time)",
+        estimatedDeparture: "5:00 PM (Local Time)",
+        flightStatus: "On Time",
+        gate: "G7",
+        terminal: "1",
+        planeModel: "Bombardier CRJ900",
+        duration: "1h 30m",
+        remarks: "-"
+      }
+    };
+
+    function pullinfo() {
+      const flightnum = document.getElementById("flightnumber").value.trim().toUpperCase();
+      const flight = flights[flightnum];
+      const infoDiv = document.getElementById("info");
+
+      if (!flight) {
+        infoDiv.innerHTML = `<p style="color:#ff6b6b; font-weight: 600;">Flight number "${flightnum}" not found. Please enter a valid flight number.</p>`;
+        return;
+      }
+
+      infoDiv.innerHTML = `
+        <h3>Flight Details for <strong>${flightnum}</strong></h3>
+        <p><strong>Airline:</strong> ${flight.airline}</p>
+        <p><strong>Route:</strong> ${flight.route}</p>
+        <p><strong>Scheduled Departure:</strong> ${flight.scheduledDeparture}</p>
+        <p><strong>Estimated Departure:</strong> ${flight.estimatedDeparture}</p>
+        <p><strong>Status:</strong> ${flight.flightStatus}</p>
+        <p><strong>Gate:</strong> ${flight.gate}</p>
+        <p><strong>Terminal:</strong> ${flight.terminal}</p>
+        <p><strong>Plane Model:</strong> ${flight.planeModel}</p>
+        <p><strong>Duration:</strong> ${flight.duration}</p>
+        <p><strong>Remarks:</strong> ${flight.remarks}</p>
+        <button onclick="generatePDF('${flightnum}')">Download Info as PDF</button>
+      `;
+    }
+
+    async function generatePDF(flightnum) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      const flight = flights[flightnum];
+      if (!flight) return;
+
+      doc.setFontSize(18);
+      doc.text(`Flight Information: ${flightnum}`, 20, 20);
+
+      doc.setFontSize(12);
+      let y = 40;
+      for (const [key, value] of Object.entries(flight)) {
+        // Capitalize keys nicely
+        const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+        doc.text(`${formattedKey}: ${value}`, 20, y);
+        y += 10;
+      }
+
+      doc.save(`Flight_${flightnum}_Info.pdf`);
+    }
+  </script>
+</body>
+</html>

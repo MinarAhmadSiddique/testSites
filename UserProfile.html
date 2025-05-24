@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Profile | Passage</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+      height: 100vh;
+      color: #fff;
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.6);
+      height: 100%;
+      width: 100%;
+      padding: 3rem 1rem;
+    }
+
+    .profile-container {
+      background-color: rgba(255, 255, 255, 0.1);
+      max-width: 600px;
+      margin: auto;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .profile-container h2 {
+      margin-bottom: 1rem;
+      font-size: 2rem;
+      color: #fff;
+    }
+
+    .profile-container p {
+      font-size: 1.1rem;
+      color: #ddd;
+      margin-bottom: 0.5rem;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .tabs a {
+      text-decoration: none;
+      background-color: #2563eb;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: bold;
+      color: white;
+      transition: background-color 0.3s;
+    }
+
+    .tabs a:hover {
+      background-color: #1e40af;
+    }
+
+    header {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      color: #fff;
+    }
+
+    .delete-button {
+      margin-top: 2rem;
+      background-color: #dc2626;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .delete-button:hover {
+      background-color: #b91c1c;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <div class="profile-container" id="userinfo">
+      <!-- Content will be loaded via JavaScript -->
+    </div>
+  </div>
+
+  <script>
+    let users = JSON.parse(localStorage.getItem("userlists"));
+    let currentuser = JSON.parse(localStorage.getItem("currentuser"));
+
+    if (!users || !currentuser || !users[currentuser]) {
+      alert("User not found. Redirecting to Sign Up.");
+      window.location.href = "SignUp.html";
+    }
+
+    document.getElementById("userinfo").innerHTML = `
+      <header>Welcome Back, ${currentuser} ✈️</header>
+      <h2>User Profile</h2>
+      <p><strong>Name:</strong> ${currentuser}</p>
+      <p><strong>Email:</strong> ${users[currentuser].email}</p>
+      <p><strong>Location:</strong> ${users[currentuser].city}, ${users[currentuser].state}, ${users[currentuser].zip}</p>
+      <div class="tabs">
+        <a href="Reservation.html">Reservation</a>
+        <a href="FlightStatus.html">Flight Status</a>
+        <a href="Tickets.html">Tickets</a>
+      </div>
+      <button class="delete-button" onclick="deleteAccount()">Delete Account</button>
+    `;
+
+    function deleteAccount() {
+      if (confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+        delete users[currentuser]; 
+        localStorage.setItem("userlists", JSON.stringify(users)); 
+        localStorage.removeItem("currentuser"); 
+        alert("Account deleted successfully.");
+        window.location.href = "SignUp.html"; 
+      }
+    }
+  </script>
+</body>
+</html>
+

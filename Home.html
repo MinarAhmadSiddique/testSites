@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Passage | Flight Booking</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f9fd;
+    }
+    header {
+      background-color: #1e3a8a;
+      color: white;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: 500;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 80vh;
+      /* Background image from Unsplash with dark overlay */
+      background: 
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80')
+        no-repeat center center/cover;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+    }
+    .hero h2 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #f0f0f0;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+    }
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      color: #ddd;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+    }
+    .cta {
+      margin-top: 2rem;
+    }
+    .cta a {
+      background-color: #2563eb;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      box-shadow: 0 3px 7px rgba(37, 99, 235, 0.5);
+    }
+    .cta a:hover {
+      background-color: #1e40af;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Passage</h1>
+    <nav>
+      <a href="SignIn.html">Sign In</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Book Your Next Flight with Ease</h2>
+    <p>Discover seamless travel booking with Passage. Sign up and start your journey now.</p>
+    <div class="cta">
+      <a href="SignUp.html">Get Started</a>
+    </div>
+  </section>
+</body>
+</html>

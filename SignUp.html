@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign Up | Passage</title>
+  <style>
+    /* Reset some default styles */
+    * {
+      box-sizing: border-box;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: 
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .signup-container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 2.5rem 3rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .signup-container h1 {
+      margin-bottom: 0.5rem;
+      color: #1e3a8a;
+      font-weight: 700;
+      font-size: 2.25rem;
+    }
+
+    .signup-container p {
+      margin-bottom: 2rem;
+      color: #4a5568;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: #334155;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="password"],
+    input[type="email"] {
+      width: 100%;
+      padding: 0.6rem 0.9rem;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.25s;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    input[type="password"]:focus {
+      border-color: #2563eb;
+      outline: none;
+      box-shadow: 0 0 6px rgba(37, 99, 235, 0.4);
+    }
+
+    button {
+      margin-top: 1rem;
+      background-color: #2563eb;
+      color: white;
+      font-weight: 700;
+      padding: 0.75rem 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #1e40af;
+    }
+
+    /* Responsive small devices */
+    @media (max-width: 480px) {
+      .signup-container {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container" role="main" aria-labelledby="signup-title">
+    <h1 id="signup-title">Create Your Account</h1>
+    <p>Join Passage today to book flights with ease and enjoy exclusive deals tailored just for you!</p>
+    <form>
+      <label for="username">Username</label>
+      <input id="username" type="text" placeholder="Enter your username" required />
+
+      <label for="city">City</label>
+      <input id="city" type="text" placeholder="Enter your city" required />
+
+      <label for="state">State</label>
+      <input id="state" type="text" placeholder="Enter your state" required />
+
+      <label for="zip">Zip Code</label>
+      <input id="zip" type="number" placeholder="Enter your zip code" required />
+
+       <label for="email">Email</label>
+      <input id="email" type="email" placeholder="Enter your email" required />
+
+      <label for="password">Password</label>
+      <input id="password" type="password" placeholder="Create a password" required />
+
+      <button type="submit" onclick="submitsignup()">Submit</button>
+    </form>
+  </div>
+
+<script>
+  let users = JSON.parse(localStorage.getItem("userlists")) || {};
+
+  function submitsignup(event) {
+    event.preventDefault(); // Prevent page reload
+
+    let name = document.getElementById("username").value.trim();
+    let password = document.getElementById("password").value;
+    let city = document.getElementById("city").value;
+    let state = document.getElementById("state").value;
+    let zip = document.getElementById("zip").value;
+    let email = document.getElementById("email").value;
+
+    if (users[name]) {
+      alert("Username already exists. Please choose a different one.");
+      return;
+    }
+
+    users[name] = {
+      password: password,
+      city: city,
+      state: state,
+      zip: zip,
+      email: email
+    };
+
+    localStorage.setItem("userlists", JSON.stringify(users));
+    localStorage.setItem("currentuser", name);
+
+    window.location.href = "SignIn.html";
+  }
+
+  document.querySelector("form").addEventListener("submit", submitsignup);
+</script>
+</body>
+</html>

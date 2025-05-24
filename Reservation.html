@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flight Reservation | Passage</title>
+  <style>
+    /* Your existing styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: 
+        linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url('https://images.unsplash.com/photo-1506015391300-4802dc74de2e?auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+      height: 100vh;
+      padding: 2rem;
+      color: #fff;
+    }
+
+    .reservation-container {
+      background-color: rgba(255, 255, 255, 0.1);
+      max-width: 600px;
+      margin: auto;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.7rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    input[readonly] {
+      background-color: #e5e7eb;
+      color: #374151;
+    }
+
+    button {
+      background-color: #2563eb;
+      color: white;
+      padding: 0.9rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #1e40af;
+    }
+
+    @media (max-width: 500px) {
+      .reservation-container {
+        padding: 1.2rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* Message style */
+    #message {
+      margin-top: 1rem;
+      font-weight: 600;
+      text-align: center;
+      color: #90ee90;
+    }
+  </style>
+</head>
+<body>
+  <div class="reservation-container">
+    <h2>Book Your Flight</h2>
+    <form id="reservation-form">
+      <div>
+        <label for="from">From</label>
+        <input type="text" id="from" name="from" value="New York" readonly />
+      </div>
+      <div>
+        <label for="to">To (U.S. State)</label>
+        <select id="to" name="to" required>
+          <option value="">Select a state</option>
+          <!-- states options as you have them -->
+          <option value="Alabama">Alabama</option>
+          <option value="Alaska">Alaska</option>
+          <option value="Arizona">Arizona</option>
+          <option value="Arkansas">Arkansas</option>
+          <option value="California">California</option>
+          <option value="Colorado">Colorado</option>
+          <option value="Connecticut">Connecticut</option>
+          <option value="Delaware">Delaware</option>
+          <option value="Florida">Florida</option>
+          <option value="Georgia">Georgia</option>
+          <option value="Hawaii">Hawaii</option>
+          <option value="Idaho">Idaho</option>
+          <option value="Illinois">Illinois</option>
+          <option value="Indiana">Indiana</option>
+          <option value="Iowa">Iowa</option>
+          <option value="Kansas">Kansas</option>
+          <option value="Kentucky">Kentucky</option>
+          <option value="Louisiana">Louisiana</option>
+          <option value="Maine">Maine</option>
+          <option value="Maryland">Maryland</option>
+          <option value="Massachusetts">Massachusetts</option>
+          <option value="Michigan">Michigan</option>
+          <option value="Minnesota">Minnesota</option>
+          <option value="Mississippi">Mississippi</option>
+          <option value="Missouri">Missouri</option>
+          <option value="Montana">Montana</option>
+          <option value="Nebraska">Nebraska</option>
+          <option value="Nevada">Nevada</option>
+          <option value="New Hampshire">New Hampshire</option>
+          <option value="New Jersey">New Jersey</option>
+          <option value="New Mexico">New Mexico</option>
+          <option value="North Carolina">North Carolina</option>
+          <option value="North Dakota">North Dakota</option>
+          <option value="Ohio">Ohio</option>
+          <option value="Oklahoma">Oklahoma</option>
+          <option value="Oregon">Oregon</option>
+          <option value="Pennsylvania">Pennsylvania</option>
+          <option value="Rhode Island">Rhode Island</option>
+          <option value="South Carolina">South Carolina</option>
+          <option value="South Dakota">South Dakota</option>
+          <option value="Tennessee">Tennessee</option>
+          <option value="Texas">Texas</option>
+          <option value="Utah">Utah</option>
+          <option value="Vermont">Vermont</option>
+          <option value="Virginia">Virginia</option>
+          <option value="Washington">Washington</option>
+          <option value="West Virginia">West Virginia</option>
+          <option value="Wisconsin">Wisconsin</option>
+          <option value="Wyoming">Wyoming</option>
+        </select>
+      </div>
+      <div>
+        <label for="date">Departure Date</label>
+        <input type="date" id="date" name="date" required />
+      </div>
+      <div>
+        <label for="passengers">Passengers</label>
+        <select id="passengers" name="passengers" required>
+          <option value="">Select</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4+">4+</option>
+        </select>
+      </div>
+      <div>
+        <label for="class">Class</label>
+        <select id="class" name="class" required>
+          <option value="">Select</option>
+          <option value="Economy">Economy</option>
+          <option value="Business">Business</option>
+          <option value="First">First</option>
+        </select>
+      </div>
+      <button type="submit" onclick="reserveflight()">Reserve Flight</button>
+    </form>
+    <div id="message"></div>
+  </div>
+
+  <script>
+    function reserveflight(){
+  document.getElementById('reservation-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const reservation = {
+      id: Date.now(), // unique id for each reservation
+      from: document.getElementById('from').value,
+      to: document.getElementById('to').value,
+      date: document.getElementById('date').value,
+      passengers: document.getElementById('passengers').value,
+      travelClass: document.getElementById('class').value,
+      reservedAt: new Date().toISOString()
+    };
+
+    // Get current reservations or empty array
+    let reservations = JSON.parse(localStorage.getItem('reservations')) || [];
+
+    // Add new reservation
+    reservations.push(reservation);
+
+    // Save back to localStorage
+    localStorage.setItem('reservations', JSON.stringify(reservations));
+
+    // Redirect to tickets page or show confirmation
+    window.location.href = 'tickets.html';
+  });
+    }
+  </script>
+</body>
+</html>
